@@ -172,7 +172,7 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
         mController = mMapView.getController();
 
         // basic map setup
-        mMapView.setTileSource(TileSourceFactory.MAPNIK);
+        mMapView.setTileSource(TileSourceFactory.HIKEBIKEMAP);
         mMapView.setTilesScaledToDpi(true);
 
         // set dark map tiles, if necessary
