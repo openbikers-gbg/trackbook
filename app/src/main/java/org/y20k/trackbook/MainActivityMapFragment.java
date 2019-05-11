@@ -463,7 +463,6 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
             displayAllTracks();
         } else {
             // Clear map of tracks overlay (But do not save them to filesystem (false as parameter))
-//            clearSingleTrack(false);
             clearAllTracks();
         }
         LogHelper.v(LOG_TAG, "Toggled overlay of all tracks, showing overlay: "
@@ -502,6 +501,10 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
             // Clear current track overlay
             mTrackOverlay = null;
         }
+
+        // Redraw the user instantly - Do not wait for next draw cycle
+        mTrackOverlay = MapHelper.createMyLocationOverlay(mActivity, mCurrentBestLocation, false, mTrackerServiceRunning);
+        mMapView.getOverlays().add(mTrackOverlay);
 
     }
 
@@ -603,6 +606,7 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
             LogHelper.v(LOG_TAG, "Drawing track overlay.");
             mTrackOverlay = MapHelper.createTrackOverlay(mActivity, track, mTrackerServiceRunning);
         }
+
         mMapView.getOverlays().add(mTrackOverlay);
 
     }
