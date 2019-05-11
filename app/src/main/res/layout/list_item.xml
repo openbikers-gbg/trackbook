@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_main"
+    android:layout_width="fill_parent"
+    android:layout_height="300dp"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/activity_horizontal_margin"
+    android:paddingEnd="@dimen/activity_horizontal_margin"
+    tools:context=".MainActivityMapFragment">
+
+
+    <TextView
+        android:id="@+id/RouteName"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/descr_map_current_track"
+        android:text="Liseberg To Lindholmen"
+        android:textSize="25sp" />
+
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_height="50dp"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/RouteName"
+        android:layout_weight="1"
+        android:text="11/05/19" />
+
+    <TextView
+        android:id="@+id/distance"
+        android:layout_height="50dp"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/RouteName"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:text="13 km"
+
+
+        />
+
+
+</RelativeLayout>
