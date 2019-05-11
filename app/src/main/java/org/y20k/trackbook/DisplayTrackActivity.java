@@ -61,7 +61,6 @@ public class DisplayTrackActivity extends AppCompatActivity {
     /* Main class variables */
     private View mRootView;
     private MapView mMapView;
-    private LinearLayout mOnboardingView;
     private IMapController mController;
     private ItemizedIconOverlay mTrackOverlay;
     private ConstraintLayout mTrackManagementLayout;
@@ -114,9 +113,6 @@ public class DisplayTrackActivity extends AppCompatActivity {
 
         // inflate root view from xml
         mRootView = inflater.inflate(R.layout.fragment_main_track, container, false);
-
-        // get reference to onboarding layout
-        mOnboardingView = (LinearLayout) mRootView.findViewById(R.id.track_tab_onboarding);
 
         // get reference to basic map
         mMapView = (MapView) mRootView.findViewById(R.id.track_map);
@@ -207,7 +203,7 @@ public class DisplayTrackActivity extends AppCompatActivity {
         // attach listener for taps on statistics sheet header
         attachTapListenerToStatisticHeaderViews();
 
-        // attach listener for taps on statistics - for US and other states plagued by Imperial units
+        // attach listener for taps on statistics - for US and other states plagued by Imperial units (lol)
         if (LengthUnitHelper.getUnitSystem() == IMPERIAL || Locale.getDefault().getCountry().equals("GB")) {
             attachTapListenerToStatisticsSheet();
         }
@@ -242,22 +238,6 @@ public class DisplayTrackActivity extends AppCompatActivity {
         LogHelper.v(LOG_TAG, "onDestroy called.");
 
         super.onDestroy();
-    }
-
-
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        // update current track
-        mCurrentTrack = i;
-
-        // load track and display map and statistics
-        DisplayTrackActivity.LoadTrackAsyncHelper loadTrackAsyncHelper = new DisplayTrackActivity.LoadTrackAsyncHelper();
-        loadTrackAsyncHelper.execute(i);
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
     }
 
 
@@ -370,18 +350,13 @@ public class DisplayTrackActivity extends AppCompatActivity {
     /* Deletes currently visible track */
     private void deleteCurrentTrack() {
 
-        // delete track file and refresh dropdown adapter
-        if (...mDropdownAdapter.getItem(mCurrentTrack).getTrackFile().delete()) {
-            mDropdownAdapter.refresh();
-            mDropdownAdapter.notifyDataSetChanged();
-            mDropdown.setAdapter(mDropdownAdapter);
+        // delete track file
+        if ( ... (mCurrentTrack) ... getTrackFile().delete()) {
+            // ... go back to "Saved tracks" (remember to refresh list)
         } else {
             LogHelper.e(LOG_TAG, "Unable to delete recording.");
             return;
         }
-
-        // ... go back to "Saved tracks"
-
     }
 
 
