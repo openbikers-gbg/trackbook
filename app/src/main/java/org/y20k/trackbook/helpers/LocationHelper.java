@@ -17,12 +17,16 @@
 package org.y20k.trackbook.helpers;
 
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.SystemClock;
 import android.provider.Settings;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -297,6 +301,18 @@ public final class LocationHelper implements TrackbookKeys {
             return provider2 == null;
         }
         return provider1.equals(provider2);
+    }
+
+    public static Address getCurrentAddress(Context context, double latitude, double longitude) {
+        Geocoder geoCoder = new Geocoder(context);
+
+        List<Address> streetAdress = new ArrayList<>();
+        try {
+            streetAdress = geoCoder.getFromLocation(latitude, longitude, 1); // 1 == Max results returned
+        } catch(IOException e) {
+            LogHelper.v(LOG_TAG, "Failed to get street address " + e);
+        }
+        return streetAdress.get(0);
     }
 
 }
