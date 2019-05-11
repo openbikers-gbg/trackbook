@@ -64,6 +64,7 @@ public class TrackBundle {
 
         // get file name without extension
         String readableTrackName = file.getName();
+        LogHelper.w(LOG_TAG, "Read file name: " + readableTrackName);
         readableTrackName = readableTrackName.substring(0, readableTrackName.indexOf(".trackbook"));
 
         try {
