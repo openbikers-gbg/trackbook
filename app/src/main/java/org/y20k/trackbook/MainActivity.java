@@ -673,6 +673,9 @@ public class MainActivity extends AppCompatActivity implements TrackbookKeys {
                         // show the my location button
                         mFloatingActionButtonLocation.show();
 
+                        // Show the toggle tracks overlays button
+                        mFloatingActionButtonToggleTracks.show();
+
                         // show map fragment
                         mSelectedTab = FRAGMENT_ID_MAP;
                         mViewPager.setCurrentItem(mSelectedTab);
@@ -686,6 +689,9 @@ public class MainActivity extends AppCompatActivity implements TrackbookKeys {
 
                         // hide the my location button
                         mFloatingActionButtonLocation.hide();
+
+                        // Hide the toggle tracks overlays button
+                        mFloatingActionButtonToggleTracks.hide();
 
                         // show tracks fragment
                         mSelectedTab = FRAGMENT_ID_TRACKS;
