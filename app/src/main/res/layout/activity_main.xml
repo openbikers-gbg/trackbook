@@ -179,11 +179,11 @@
             android:clickable="true"
             android:contentDescription="@string/descr_toggle_tracks"
             android:focusable="true"
-            app:backgroundTint="@color/location_button_background"
+            app:backgroundTint="@color/trackbook_grey_lighter"
             app:fabSize="mini"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_my_location_24dp" />
+            app:srcCompat="@drawable/ic_favorite" />
 
 
         <!-- MAIN BUTTON -->
@@ -226,8 +226,10 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/navigation"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
