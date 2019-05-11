@@ -55,7 +55,7 @@ import java.util.Locale;
 public class DisplayTrackActivity extends AppCompatActivity {
 
     /* Define log tag */
-    private static final String LOG_TAG = MainActivityTrackFragment.class.getSimpleName();
+    private static final String LOG_TAG = DisplayTrackActivity.class.getSimpleName();
 
 
     /* Main class variables */
@@ -82,12 +82,11 @@ public class DisplayTrackActivity extends AppCompatActivity {
     private BottomSheetBehavior mStatisticsSheetBehavior;
     private int mCurrentTrack;
     private Track mTrack;
-    // private BroadcastReceiver mTrackSavedReceiver;
 
 
-    /* Return a new Instance of MainActivityTrackFragment */
-    public static MainActivityTrackFragment newInstance() {
-        return new MainActivityTrackFragment();
+    /* Return a new Instance of DisplayTrackActivity */
+    public static DisplayTrackActivity newInstance() {
+        return new DisplayTrackActivity();
     }
 
 
@@ -105,22 +104,6 @@ public class DisplayTrackActivity extends AppCompatActivity {
         } else {
             mCurrentTrack = 0; // Retrieve the track to display... ;
         }
-
-        // listen for finished save operation
-        /* ...
-        mTrackSavedReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.hasExtra(EXTRA_SAVE_FINISHED) && intent.getBooleanExtra(EXTRA_SAVE_FINISHED, false)) {
-                    LogHelper.v(LOG_TAG, "Save operation detected. Start loading the new track.");
-
-                }
-            }
-        };
-
-        IntentFilter trackSavedReceiverIntentFilter = new IntentFilter(ACTION_TRACK_SAVE);
-        LocalBroadcastManager.getInstance(this).registerReceiver(mTrackSavedReceiver, trackSavedReceiverIntentFilter);
-        */
 
     }
 
@@ -206,7 +189,7 @@ public class DisplayTrackActivity extends AppCompatActivity {
             displayTrack();
         } else if (mTrack == null) {
             // load track and display map and statistics
-            MainActivityTrackFragment.LoadTrackAsyncHelper loadTrackAsyncHelper = new MainActivityTrackFragment.LoadTrackAsyncHelper();
+            DisplayTrackActivity.LoadTrackAsyncHelper loadTrackAsyncHelper = new DisplayTrackActivity.LoadTrackAsyncHelper();
             loadTrackAsyncHelper.execute();
         } else {
             // just display map and statistics
@@ -258,12 +241,6 @@ public class DisplayTrackActivity extends AppCompatActivity {
     public void onDestroy() {
         LogHelper.v(LOG_TAG, "onDestroy called.");
 
-        /*
-        // remove listener
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mTrackSavedReceiver);
-        */
-
-
         super.onDestroy();
     }
 
@@ -274,7 +251,7 @@ public class DisplayTrackActivity extends AppCompatActivity {
         mCurrentTrack = i;
 
         // load track and display map and statistics
-        MainActivityTrackFragment.LoadTrackAsyncHelper loadTrackAsyncHelper = new MainActivityTrackFragment.LoadTrackAsyncHelper();
+        DisplayTrackActivity.LoadTrackAsyncHelper loadTrackAsyncHelper = new DisplayTrackActivity.LoadTrackAsyncHelper();
         loadTrackAsyncHelper.execute(i);
     }
 
@@ -489,7 +466,7 @@ public class DisplayTrackActivity extends AppCompatActivity {
 
                 // show delete dialog - results are handles by onActivityResult
                 DialogFragment dialogFragment = DialogHelper.newInstance(dialogTitle, dialogMessage, dialogPositiveButton, dialogNegativeButton);
-                dialogFragment.setTargetFragment(MainActivityTrackFragment.this, RESULT_DELETE_DIALOG);
+                dialogFragment.setTargetFragment(DisplayTrackActivity.this, RESULT_DELETE_DIALOG);
                 dialogFragment.show(this.getSupportFragmentManager(), "DeleteDialog");
             }
         };
