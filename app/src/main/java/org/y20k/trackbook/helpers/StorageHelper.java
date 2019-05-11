@@ -74,7 +74,7 @@ public class StorageHelper implements TrackbookKeys {
         }
 
         // create temp file object // todo check -> may produce NullPointerException
-        String tempFilePathName = mFolder.toString() + "/" + FILE_NAME_TEMP + FILE_TYPE_TRACKBOOK_EXTENSION;
+        String tempFilePathName = mFolder.toString() + "/" + createFileName(FILE_NAME_TEMP);
         mTempFile = new File(tempFilePathName);
 
         // delete old track - exclude temp file
@@ -94,6 +94,10 @@ public class StorageHelper implements TrackbookKeys {
     }
 
 
+    public String createFileName(String trackName) {
+        return trackName + FILE_TYPE_TRACKBOOK_EXTENSION;
+    }
+
     /* Saves track object to file */
     public boolean saveTrack(@Nullable Track track, int fileType) {
 
@@ -110,17 +114,24 @@ public class StorageHelper implements TrackbookKeys {
             String fileName;
             if (fileType == FILE_TEMP_TRACK) {
                 // case: temp file
-                fileName = FILE_NAME_TEMP + FILE_TYPE_TRACKBOOK_EXTENSION;
+                fileName = createFileName(FILE_NAME_TEMP);
             } else {
                 // case: regular file
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.US);
-                fileName = dateFormat.format(recordingStart) + FILE_TYPE_TRACKBOOK_EXTENSION;
+                String formattedDate = dateFormat.format(recordingStart);
+
+                // Save track to file name using the track's name, so that TrackBunger.getName()
+                // Does not need a re-write
+                String trackName = track.getmTrackName();
+                fileName = createFileName(trackName + " " + formattedDate);
             }
             File file = new File(mFolder.toString() + "/" +  fileName);
 
             // convert track to JSON
             Gson gson = getCustomGson();
             String json = gson.toJson(track);
+            // Show the track's JSON-data
+            LogHelper.v(LOG_TAG, "Track data: " +  json);
 
             // write track
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {

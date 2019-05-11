@@ -44,10 +44,11 @@ public class TrackBuilder {
     private final double mMinAltitude;
     private final double mPositiveElevation;
     private final double mNegativeElevation;
+    private final String mTrackName;
 
 
     /* Generic Constructor */
-    public TrackBuilder(int trackFormatVersion, List<WayPoint> wayPoints, float trackLength, long duration, float stepCount, Date recordingStart, Date recordingStop, double maxAltitude, double minAltitude, double positiveElevation, double negativeElevation) {
+    public TrackBuilder(int trackFormatVersion, List<WayPoint> wayPoints, float trackLength, long duration, float stepCount, Date recordingStart, Date recordingStop, double maxAltitude, double minAltitude, double positiveElevation, double negativeElevation, String trackName) {
         mTrackFormatVersion = trackFormatVersion;
         mWayPoints = wayPoints;
         mTrackLength = trackLength;
@@ -59,6 +60,7 @@ public class TrackBuilder {
         mMinAltitude = minAltitude;
         mPositiveElevation = positiveElevation;
         mNegativeElevation = negativeElevation;
+        mTrackName = trackName;
     }
 
 
@@ -67,10 +69,10 @@ public class TrackBuilder {
         switch (mTrackFormatVersion) {
             case 1:
                 // file format version 1 - does not have elevation data stored
-                return new Track(mTrackFormatVersion, mWayPoints, mTrackLength, mDuration, mStepCount, mRecordingStart, mRecordingStop, 0f, 0f, 0f, 0f);
+                return new Track(mTrackFormatVersion, mWayPoints, mTrackLength, mDuration, mStepCount, mRecordingStart, mRecordingStop, 0f, 0f, 0f, 0f, mTrackName);
             case 2:
                 // file format version 2 (current version)
-                return new Track(mTrackFormatVersion, mWayPoints, mTrackLength, mDuration, mStepCount, mRecordingStart, mRecordingStop, mMaxAltitude, mMinAltitude, mPositiveElevation, mNegativeElevation);
+                return new Track(mTrackFormatVersion, mWayPoints, mTrackLength, mDuration, mStepCount, mRecordingStart, mRecordingStop, mMaxAltitude, mMinAltitude, mPositiveElevation, mNegativeElevation, mTrackName);
             default:
                 LogHelper.e(LOG_TAG, "Unknown file format version: " + mTrackFormatVersion);
                 return null;

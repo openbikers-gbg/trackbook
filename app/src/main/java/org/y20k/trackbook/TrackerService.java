@@ -27,6 +27,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Address;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -73,6 +74,7 @@ public class TrackerService extends Service implements TrackbookKeys, SensorEven
     private LocationListener mNetworkListener = null;
     private SettingsContentObserver mSettingsContentObserver;
     private Location mCurrentBestLocation;
+    private Address mcurrentBestAdress;
     private Notification mNotification;
     private NotificationCompat.Builder mNotificationBuilder;
     private NotificationManager mNotificationManager;
@@ -194,6 +196,19 @@ public class TrackerService extends Service implements TrackbookKeys, SensorEven
 
     }
 
+    private Address getCurrentAddress() throws Exception {
+        // Try and get the street address
+        if(mCurrentBestLocation != null) {
+            double latitude = mCurrentBestLocation.getLatitude();
+            double longitude = mCurrentBestLocation.getLongitude();
+            return LocationHelper.getCurrentAddress(this.getBaseContext(), latitude, longitude);
+        } else {
+            // ! :((
+            throw new Exception("Could not find street adress!");
+        }
+
+    }
+
 
     /* Start tracking location */
     public void startTracking(Location lastLocation) {
@@ -209,6 +224,17 @@ public class TrackerService extends Service implements TrackbookKeys, SensorEven
             } else {
                 mCurrentBestLocation = LocationHelper.determineLastKnownLocation(mLocationManager);
             }
+
+            // Try and get the street address
+            try {
+                mcurrentBestAdress = getCurrentAddress();
+                LogHelper.v(LOG_TAG, "Starting street address: " + mcurrentBestAdress);
+                mTrack.setmStartAdress(mcurrentBestAdress.getAddressLine(0));
+            } catch (Exception e) {
+                LogHelper.v(LOG_TAG, "Could not get current street address :" + e);
+            }
+
+
 
             // begin recording
             startMovementRecording();
@@ -275,6 +301,14 @@ public class TrackerService extends Service implements TrackbookKeys, SensorEven
         // store current date and time
         mTrack.setRecordingEnd();
 
+        // Store current address
+        try {
+            mcurrentBestAdress = getCurrentAddress();
+        } catch (Exception e) {
+
+        }
+        mTrack.setmEndAdress(mcurrentBestAdress.getAddressLine(0));
+
         // stop timer
         mTimer.cancel();
 
@@ -300,6 +334,8 @@ public class TrackerService extends Service implements TrackbookKeys, SensorEven
 
         // remove TrackerService from foreground state
         stopForeground(false);
+
+        LogHelper.v(LOG_TAG, "Stopping tracking .. " + mTrack);
     }
 
 

@@ -52,10 +52,13 @@ public class Track implements TrackbookKeys, Parcelable {
     private double mMinAltitude;
     private double mPositiveElevation;
     private double mNegativeElevation;
+    private String mStartAdress;
+    private String mEndAdress;
+    private String mTrackName;
 
 
     /* Generic Constructor */
-    public Track(int trackFormatVersion, List<WayPoint> wayPoints, float trackLength, long duration, float stepCount, Date recordingStart, Date recordingStop, double maxAltitude, double minAltitude, double positiveElevation, double negativeElevation) {
+    public Track(int trackFormatVersion, List<WayPoint> wayPoints, float trackLength, long duration, float stepCount, Date recordingStart, Date recordingStop, double maxAltitude, double minAltitude, double positiveElevation, double negativeElevation, String trackName) {
         mTrackFormatVersion = trackFormatVersion;
         mWayPoints = wayPoints;
         mTrackLength = trackLength;
@@ -67,12 +70,13 @@ public class Track implements TrackbookKeys, Parcelable {
         mMinAltitude = minAltitude;
         mPositiveElevation = positiveElevation;
         mNegativeElevation = negativeElevation;
+        mTrackName = trackName;
     }
 
 
     /* Copy Constructor */
     public Track(Track track) {
-        this(track.getTrackFormatVersion(), track.getWayPoints(), track.getTrackLength(), track.getTrackDuration(), track.getStepCount(), track.getRecordingStart(), track.getRecordingStop(), track.getMaxAltitude(), track.getMinAltitude(), track.getPositiveElevation(), track.getNegativeElevation());
+        this(track.getTrackFormatVersion(), track.getWayPoints(), track.getTrackLength(), track.getTrackDuration(), track.getStepCount(), track.getRecordingStart(), track.getRecordingStop(), track.getMaxAltitude(), track.getMinAltitude(), track.getPositiveElevation(), track.getNegativeElevation(), track.getmTrackName());
     }
 
 
@@ -89,6 +93,7 @@ public class Track implements TrackbookKeys, Parcelable {
         mMinAltitude = 0f;
         mPositiveElevation = 0f;
         mNegativeElevation = 0f;
+
     }
 
 
@@ -105,6 +110,7 @@ public class Track implements TrackbookKeys, Parcelable {
         mMinAltitude = in.readDouble();
         mPositiveElevation = in.readDouble();
         mNegativeElevation = in.readDouble();
+        mTrackName = in.readString();
     }
 
 
@@ -310,7 +316,51 @@ public class Track implements TrackbookKeys, Parcelable {
         parcel.writeDouble(mMinAltitude);
         parcel.writeDouble(mPositiveElevation);
         parcel.writeDouble(mNegativeElevation);
+        parcel.writeString("");
     }
 
 
+    public String getmTrackName() {
+        // mTrackName is "startingAdress - endAdress"
+        String formattedStartAddress = trimAdress(mStartAdress);
+        String formattedEndAddress = trimAdress(mEndAdress);
+        return formattedStartAddress + " - " + formattedEndAddress;
+    }
+
+    private String trimAdress(String address) {
+        // Format "Teknikgatan 7, 417 56 Göteborg, Sverige" to "Teknikgatan"
+        // Algorithm: Return all words before the first number
+        StringBuilder result = new StringBuilder();
+
+        for(char c : address.toCharArray()) {
+            if(Character.isDigit(c)) {
+                break;
+            }
+
+            result.append(c);
+        }
+
+        // Remove any trailing whitespace
+        return result.toString().trim();
+    }
+
+    public void setmTrackName(String mTrackName) {
+        this.mTrackName = mTrackName;
+    }
+
+    public String getmEndAdress() {
+        return mEndAdress;
+    }
+
+    public void setmEndAdress(String mEndAdress) {
+        this.mEndAdress = mEndAdress;
+    }
+
+    public String getmStartAdress() {
+        return mStartAdress;
+    }
+
+    public void setmStartAdress(String mStartAdress) {
+        this.mStartAdress = mStartAdress;
+    }
 }
