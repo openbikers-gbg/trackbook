@@ -96,6 +96,8 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
     private boolean mLocationSystemSetting;
     private boolean mFragmentVisible;
 
+    private boolean tracksOverlayVisible;
+
 
     /* Constructor (default) */
     public MainActivityMapFragment() {
@@ -225,11 +227,6 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
             mMapView.getOverlays().add(mMyLocationOverlay);
         }
 
-        // TODO: Try to draw all tracks from filesystem onto map
-        if(mMapView != null) {
-            displayAllTracks();
-        }
-
         return mMapView;
     }
 
@@ -240,6 +237,9 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
 
         // set visibility
         mFragmentVisible = true;
+
+        // Do not show all tracks as overlay to begin with
+        tracksOverlayVisible = false;
 
         // load state of tracker service - see if anything changed
         loadTrackerServiceState(mActivity);
@@ -329,7 +329,7 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
                     // user chose SAVE
                     if (mTrack.getSize() > 0) {
                         // Track is not empty - clear map AND save track
-                        clearMap(true);
+                        clearSingleTrack(true);
                         // FloatingActionButton state is already being handled in MainActivity
                         ((MainActivity)mActivity).onFloatingActionButtonResult(requestCode, resultCode);
                         LogHelper.v(LOG_TAG, "Save dialog result: SAVE");
@@ -349,7 +349,7 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
                         Toast.makeText(mActivity, getString(R.string.toast_message_track_clear), Toast.LENGTH_LONG).show();
                     }
                     // clear map, DO NOT save track
-                    clearMap(false);
+                    clearSingleTrack(false);
                     // handle FloatingActionButton state in MainActivity
                     ((MainActivity)mActivity).onFloatingActionButtonResult(requestCode, resultCode);
                 } else if (resultCode == Activity.RESULT_CANCELED){
@@ -454,9 +454,26 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
         }
     }
 
+    public boolean handleToggleTracks() {
+        // Toggle current visibility state of all tracks overlay
+        tracksOverlayVisible = !tracksOverlayVisible;
+
+        if(tracksOverlayVisible) {
+            // Show all tracks as overlay
+            displayAllTracks();
+        } else {
+            // Clear map of tracks overlay (But do not save them to filesystem (false as parameter))
+//            clearSingleTrack(false);
+            clearAllTracks();
+        }
+        LogHelper.v(LOG_TAG, "Toggled overlay of all tracks, showing overlay: "
+                + tracksOverlayVisible);
+        return true;
+    }
+
 
     /* Removes track crumbs from map */
-    private void clearMap(boolean saveTrack) {
+    private void clearSingleTrack(boolean saveTrack) {
 
         // clear map
         if (mTrackOverlay != null) {
@@ -473,6 +490,17 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
             // clear track object and delete temp file
             mTrack = null;
             mStorageHelper.deleteTempFile();
+        }
+
+    }
+
+    private void clearAllTracks() {
+        // We do never want to save all tracks again
+        // Clear all track overlays
+        if(mMapView != null) {
+            mMapView.getOverlays().clear();
+            // Clear current track overlay
+            mTrackOverlay = null;
         }
 
     }

@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements TrackbookKeys {
     private FloatingActionButton mFloatingActionButtonSubClear;
     private FloatingActionButton mFloatingActionButtonSubResume;
     private FloatingActionButton mFloatingActionButtonLocation;
+    private FloatingActionButton mFloatingActionButtonToggleTracks;
     private CardView mFloatingActionButtonSubSaveLabel;
     private CardView mFloatingActionButtonSubClearLabel;
     private CardView mFloatingActionButtonSubResumeLabel;
@@ -443,6 +444,7 @@ public class MainActivity extends AppCompatActivity implements TrackbookKeys {
             mFloatingActionButtonSubClearLabel = findViewById(R.id.fabSubMenuLabelClear);
             mFloatingActionButtonSubResume = findViewById(R.id.fabSubMenuButtonResume);
             mFloatingActionButtonSubResumeLabel = findViewById(R.id.fabSubMenuLabelResume);
+            mFloatingActionButtonToggleTracks = findViewById(R.id.fabToggleTracksButton);
             if (mFloatingActionButtonSubMenuVisible) {
                 showFloatingActionButtonMenu(true);
             } else {
@@ -534,6 +536,14 @@ public class MainActivity extends AppCompatActivity implements TrackbookKeys {
             public void onClick(View view) {
                 MainActivityMapFragment mainActivityMapFragment = (MainActivityMapFragment) mSectionsPagerAdapter.getFragment(FRAGMENT_ID_MAP);
                 mainActivityMapFragment.handleShowMyLocation();
+            }
+        });
+
+        mFloatingActionButtonToggleTracks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivityMapFragment mainActivityMapFragment = (MainActivityMapFragment) mSectionsPagerAdapter.getFragment(FRAGMENT_ID_MAP);
+                mainActivityMapFragment.handleToggleTracks();
             }
         });
 
