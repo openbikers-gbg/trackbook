@@ -423,7 +423,7 @@ public class MainActivity extends AppCompatActivity implements TrackbookKeys {
             // point to the main map layout
             setContentView(R.layout.activity_main);
 
-            // create adapter that returns fragments for the maim map and the last track display
+            // create adapter that returns fragments for the main map and the last track display
             mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
             // set up the ViewPager with the sections adapter.

@@ -214,7 +214,7 @@ public class MainActivityTrackFragment extends Fragment implements AdapterView.O
         mDropdown = (Spinner) mRootView.findViewById(R.id.track_selector);
 
         // attach listeners to export and delete buttons
-        ImageButton shareButton = (ImageButton) mRootView.findViewById(R.id.share_button);
+        ImageButton shareButton  = (ImageButton) mRootView.findViewById(R.id.share_button);
         ImageButton exportButton = (ImageButton) mRootView.findViewById(R.id.export_button);
         ImageButton deleteButton = (ImageButton) mRootView.findViewById(R.id.delete_button);
         shareButton.setOnClickListener(getShareButtonListener());
@@ -577,7 +577,7 @@ public class MainActivityTrackFragment extends Fragment implements AdapterView.O
                     dialogPositiveButton = R.string.dialog_export_action_overwrite;
                     dialogNegativeButton = R.string.dialog_default_action_cancel;
                 } else {
-                    // CASE: EXPORT - GPX file does NOT yet exits
+                    // CASE: EXPORT - GPX file does NOT yet exist
                     dialogTitle = R.string.dialog_export_title_export;
                     dialogMessage = getString(R.string.dialog_export_content_export) + " (" + recordingStartDate + " | " + LengthUnitHelper.convertDistanceToString(mTrack.getTrackDistance()) + ")";
                     dialogPositiveButton = R.string.dialog_export_action_export;
