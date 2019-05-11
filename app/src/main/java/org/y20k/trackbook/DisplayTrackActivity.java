@@ -47,18 +47,20 @@ import org.y20k.trackbook.helpers.LogHelper;
 import org.y20k.trackbook.helpers.MapHelper;
 import org.y20k.trackbook.helpers.NightModeHelper;
 import org.y20k.trackbook.helpers.StorageHelper;
+import org.y20k.trackbook.helpers.TrackbookKeys;
 
 import java.io.File;
 import java.text.DateFormat;
 import java.util.Locale;
 
-public class DisplayTrackActivity extends AppCompatActivity {
+public class DisplayTrackActivity extends AppCompatActivity  implements TrackbookKeys {
 
     /* Define log tag */
     private static final String LOG_TAG = DisplayTrackActivity.class.getSimpleName();
 
 
     /* Main class variables */
+    private Activity mActivity;
     private View mRootView;
     private MapView mMapView;
     private IMapController mController;
@@ -92,27 +94,31 @@ public class DisplayTrackActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_track);
+
+        // Need for this in child classes?
+        mActivity = this;
 
         // action bar has options menu
-        setHasOptionsMenu(true);
+        // ...setHasOptionsMenu(true);
 
         // get current track
         if (savedInstanceState != null) {
             mCurrentTrack = savedInstanceState.getInt(INSTANCE_CURRENT_TRACK, 0);
         } else {
             mCurrentTrack = 0; // Retrieve the track to display... ;
+
+            // ...
+            Bundle b = getIntent().getExtras();
+            if(b != null)
+                mCurrentTrack = b.getInt("track"); // <- "track"?
         }
 
-    }
+        // (onCreateView bit)
 
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        LayoutInflater inflater = LayoutInflater.from(this);
 
         // inflate root view from xml
-        mRootView = inflater.inflate(R.layout.fragment_main_track, container, false);
+        mRootView = inflater.inflate(R.layout.activity_display_track, null, false);
 
         // get reference to basic map
         mMapView = (MapView) mRootView.findViewById(R.id.track_map);
@@ -208,7 +214,6 @@ public class DisplayTrackActivity extends AppCompatActivity {
             attachTapListenerToStatisticsSheet();
         }
 
-        return mRootView;
     }
 
 
@@ -221,15 +226,6 @@ public class DisplayTrackActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-    }
-
-
-    @Override
-    public void onDestroyView(){
-        super.onDestroyView();
-
-        // deactivate map
-        mMapView.onDetach();
     }
 
 
@@ -351,7 +347,7 @@ public class DisplayTrackActivity extends AppCompatActivity {
     private void deleteCurrentTrack() {
 
         // delete track file
-        if ( ... (mCurrentTrack) ... getTrackFile().delete()) {
+        if (true) { // ... (mCurrentTrack) ... getTrackFile().delete()) {
             // ... go back to "Saved tracks" (remember to refresh list)
         } else {
             LogHelper.e(LOG_TAG, "Unable to delete recording.");
@@ -370,12 +366,12 @@ public class DisplayTrackActivity extends AppCompatActivity {
                     case BottomSheetBehavior.STATE_EXPANDED:
                         // statistics sheet expanded
                         mTrackManagementLayout.setVisibility(View.INVISIBLE);
-                        mStatisticsSheet.setBackgroundColor(ContextCompat.getColor(this, R.color.statistic_sheet_background_expanded));
+                        mStatisticsSheet.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.statistic_sheet_background_expanded));
                         break;
                     case BottomSheetBehavior.STATE_COLLAPSED:
                         // statistics sheet collapsed
                         mTrackManagementLayout.setVisibility(View.VISIBLE);
-                        mStatisticsSheet.setBackgroundColor(ContextCompat.getColor(this, R.color.statistic_sheet_background_collapsed));
+                        mStatisticsSheet.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.statistic_sheet_background_collapsed));
                         mStatisticsSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                         break;
                     case BottomSheetBehavior.STATE_HIDDEN:
@@ -397,9 +393,9 @@ public class DisplayTrackActivity extends AppCompatActivity {
                     mTrackManagementLayout.setVisibility(View.INVISIBLE);
                 }
                 if (slideOffset < 0.125f) {
-                    mStatisticsSheet.setBackgroundColor(ContextCompat.getColor(this, R.color.statistic_sheet_background_collapsed));
+                    mStatisticsSheet.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.statistic_sheet_background_collapsed));
                 } else {
-                    mStatisticsSheet.setBackgroundColor(ContextCompat.getColor(this, R.color.statistic_sheet_background_expanded));
+                    mStatisticsSheet.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.statistic_sheet_background_expanded));
                 }
             }
         };
@@ -411,15 +407,15 @@ public class DisplayTrackActivity extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = ExportHelper.getGpxFileIntent(this, mTrack);
+                Intent intent = ExportHelper.getGpxFileIntent(mActivity, mTrack);
                 // create intent to show chooser
                 String title = getString(R.string.dialog_share_gpx);
 //                String title = getResources().getString(R.string.chooser_title);
                 Intent chooser = Intent.createChooser(intent, title);
-                if (intent.resolveActivity(this.getPackageManager()) != null) {
+                if (intent.resolveActivity(mActivity.getPackageManager()) != null) {
                     startActivity(chooser);
                 } else {
-                    Toast.makeText(this, R.string.toast_message_install_file_helper, Toast.LENGTH_LONG).show();
+                    Toast.makeText(mActivity, R.string.toast_message_install_file_helper, Toast.LENGTH_LONG).show();
                 }
             }
         };
@@ -441,8 +437,8 @@ public class DisplayTrackActivity extends AppCompatActivity {
 
                 // show delete dialog - results are handles by onActivityResult
                 DialogFragment dialogFragment = DialogHelper.newInstance(dialogTitle, dialogMessage, dialogPositiveButton, dialogNegativeButton);
-                dialogFragment.setTargetFragment(DisplayTrackActivity.this, RESULT_DELETE_DIALOG);
-                dialogFragment.show(this.getSupportFragmentManager(), "DeleteDialog");
+                // ... dialogFragment.setTargetFragment( ...mActivity? , RESULT_DELETE_DIALOG);
+                // ... dialogFragment.show(mActivity.getSupportFragmentManager(), "DeleteDialog");
             }
         };
     }
@@ -456,7 +452,7 @@ public class DisplayTrackActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     // inform user about possible issues with altitude measurements
-                    Toast.makeText(this, R.string.toast_message_elevation_info, Toast.LENGTH_LONG).show();
+                    Toast.makeText(mActivity, R.string.toast_message_elevation_info, Toast.LENGTH_LONG).show();
                 }
             });
         }
@@ -506,13 +502,18 @@ public class DisplayTrackActivity extends AppCompatActivity {
         protected Void doInBackground(Integer... ints) {
             LogHelper.v(LOG_TAG, "Loading track object in background.");
 
-            StorageHelper storageHelper = new StorageHelper(this);
+            StorageHelper storageHelper = new StorageHelper(mActivity);
             if (ints.length > 0) {
                 // get track file from dropdown adapter
                 int item = ints[0];
-                File trackFile = mDropdownAdapter.getItem(item).getTrackFile();
-                LogHelper.v(LOG_TAG, "Loading track number " + item);
-                mTrack = storageHelper.loadTrack(trackFile);
+
+                // ... need to load the list of tracks, and then access the "item-th"
+                // File trackFile = ... mDropdownAdapter.getItem(item).getTrackFile();
+                // LogHelper.v(LOG_TAG, "Loading track number " + item);
+                // mTrack = storageHelper.loadTrack(trackFile);
+
+                // temporary solution:
+                mTrack = storageHelper.loadTrack(FILE_MOST_CURRENT_TRACK);
             } else {
                 // load track object from most current file
                 LogHelper.v(LOG_TAG, "No specific track specified. Loading most current one.");
