@@ -272,11 +272,6 @@ public class MainActivityTrackFragment extends Fragment implements AdapterView.O
             attachTapListenerToStatisticsSheet();
         }
 
-        // TODO: Try to draw all tracks from filesystem onto map
-        if(mMapView != null) {
-            displayAllTracks();
-        }
-
         return mRootView;
     }
 
@@ -423,33 +418,7 @@ public class MainActivityTrackFragment extends Fragment implements AdapterView.O
         mController.setCenter(position);
 
     }
-
-
-    private void displayAllTracks() {
-        // Load all tracks from filesystem
-        List<Track> loadedTracks = loadAllTracks();
-        LogHelper.v(LOG_TAG, "Trying to draw all overlays onto map");
-        // Draw all tracks as an overlay
-        for(Track track : loadedTracks) {
-            drawTrackOverlay(track);
-        }
-    }
-
-    private List<Track> loadAllTracks() {
-        // Create a storage helper for loading track files
-        StorageHelper storageHelper = new StorageHelper(mActivity);
-
-        File[] listOfTrackbookFiles = storageHelper.getListOfTrackbookFiles();
-        List<Track> loadedTracks = new ArrayList<>();
-
-        LogHelper.v(LOG_TAG, "Trying to all tracks from file system");
-        // Try and read all track files into memory
-        for(File trackbookFile : listOfTrackbookFiles) {
-            loadedTracks.add(storageHelper.loadTrack(trackbookFile));
-        }
-
-        return loadedTracks;
-    }
+    
 
     /* Draws track onto overlay */
     private void drawTrackOverlay(Track track) {
