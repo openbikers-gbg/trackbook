@@ -1,50 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_main"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="100dp"
-    tools:context=".MainActivityMapFragment"
+    android:layout_height="300dp"
+    android:orientation="vertical"
     android:paddingStart="@dimen/activity_horizontal_margin"
     android:paddingEnd="@dimen/activity_horizontal_margin"
-    >
+    tools:context=".MainActivityMapFragment">
 
 
     <TextView
         android:id="@+id/RouteName"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
+        android:layout_alignParentTop="true"
         android:contentDescription="@string/descr_map_current_track"
         android:text="Liseberg To Lindholmen"
-        android:layout_alignParentTop="true"
-        android:textSize="25sp"
+        android:textSize="25sp" />
+
+
+    <TextView
+        android:id="@+id/Date"
+        android:layout_height="50dp"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/RouteName"
+        android:layout_weight="1"
+        android:text="11/05/19" />
+
+    <TextView
+        android:id="@+id/Distance"
+        android:layout_height="50dp"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/RouteName"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:text="13 km"
+
+
         />
-
-
-        <TextView
-            android:id="@+id/Date"
-            android:layout_weight="1"
-            android:layout_height="50dp"
-            android:text="11/05/19"
-            android:layout_width="0dp"
-            android:layout_below="@id/RouteName"
-            />
-
-        <TextView
-            android:id="@+id/Distance"
-            android:layout_weight="1"
-            android:layout_height="50dp"
-            android:text="13 km"
-            android:layout_width="0dp"
-            android:gravity="right"
-            android:layout_below="@id/RouteName"
-
-
-            />
-
-
 
 
 </RelativeLayout>

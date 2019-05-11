@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.LinearLayout
 
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -14,18 +13,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.y20k.trackbook.core.Track
 
 import org.y20k.trackbook.helpers.StorageHelper
-import org.y20k.trackbook.helpers.LogHelper
-import java.io.File
-import android.R
 import kotlinx.android.synthetic.main.list_item.*
-import android.graphics.Movie
-
-
-
 
 
 class MainActivityTrackFragment : Fragment(), TrackbookKeys {
     var tracks = mutableListOf<Track>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // get activity
+        val mActivity = activity
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rv = RecyclerView(context!!)
@@ -46,16 +45,16 @@ class MainActivityTrackFragment : Fragment(), TrackbookKeys {
     inner class RVAdapter(private val trackList: List<Track>) : RecyclerView.Adapter<ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val view = LinearLayout(parent.context)
-            LogHelper.v("viewis:", view.toString())
-            return ViewHolder(view)
+            val itemView = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.list_item, parent, false)
+            return ViewHolder(itemView)
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val track = trackList.get(position)
-            holder.routeName?.setText("Track")
-            holder.date?.setText(track.recordingStart.toString())
-            holder.distance?.setText(track.trackDistance.toString())
+            holder.routeName?.text = "Track"
+            holder.date?.text = track.recordingStart.toString()
+            holder.distance?.text = track.trackDistance.toString()
         }
 
         override fun getItemCount(): Int {
@@ -67,14 +66,14 @@ class MainActivityTrackFragment : Fragment(), TrackbookKeys {
      * ViewHolder for the RecyclerView
      */
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var routeName = RouteName
-        var date = Date
-        var distance = Distance
+        var routeName : TextView?
+        var date : TextView?
+        var distance : TextView?
 
-        /*init {
-            var routeName = RouteName as TextView
-            var date = Date as TextView
-            var distance = Distance as TextView
-        }*/
+        init {
+            routeName = RouteName
+            date = Date
+            distance = Distance
+        }
     }
 }
