@@ -97,6 +97,7 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
     private boolean mFragmentVisible;
 
     private boolean tracksOverlayVisible;
+    private List<Track> tracksCache;
 
 
     /* Constructor (default) */
@@ -612,11 +613,16 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
     }
 
     private void displayAllTracks() {
-        // Load all tracks from filesystem
-        List<Track> loadedTracks = loadAllTracks();
+        // Function for drawing all tracks as an overlay to the map fragment
+
+        if(tracksCache == null || tracksCache.isEmpty()) {
+            // If cache is not loaded, load all tracks from filesystem
+            LogHelper.v(LOG_TAG, "Initializing all tracks cache");
+            tracksCache = loadAllTracks();
+        }
         LogHelper.v(LOG_TAG, "Trying to draw all overlays onto map");
         // Draw all tracks as an overlay
-        for(Track track : loadedTracks) {
+        for(Track track : tracksCache) {
             drawTrackOverlay(track);
         }
     }
