@@ -22,8 +22,10 @@ import android.location.Location;
 import android.widget.Toast;
 
 import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.drawing.OsmPath;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.Polyline;
 import org.y20k.trackbook.R;
 import org.y20k.trackbook.core.Track;
 import org.y20k.trackbook.core.WayPoint;
@@ -179,6 +181,29 @@ public final class MapHelper {
         final GeoPoint position = new GeoPoint(location.getLatitude(),location.getLongitude());
 
         return new OverlayItem(title, description, position);
+    }
+
+    /* Connect all the waypoints of a Track object with lines */
+
+    public static Polyline createOverlayPath(Track track) {
+
+        Polyline path = new Polyline();
+
+        // Create a Geopoint for every wayPoint
+        for(WayPoint wayPoint : track.getWayPoints()) {
+            // Get location from waypoint
+            Location location = wayPoint.getLocation();
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+
+            GeoPoint geoPoint = new GeoPoint(latitude, longitude);
+
+            // Add it to the polyline
+            path.addPoint(geoPoint);
+        }
+
+
+        return path;
     }
 
 }

@@ -49,6 +49,7 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.TilesOverlay;
 import org.osmdroid.views.overlay.compass.CompassOverlay;
 import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
@@ -612,6 +613,24 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
 
     }
 
+    /* Draws track path onto overlay */
+    private void drawTrackPathOverlay(Track track) {
+        //mMapView.getOverlays().remove(mTrackOverlay);
+        Polyline path = null;
+        if (track == null || track.getSize() == 0) {
+            LogHelper.i(LOG_TAG, "Waiting for a track. Showing preliminary location.");
+            mTrackOverlay = MapHelper.createMyLocationOverlay(mActivity, mCurrentBestLocation, false, mTrackerServiceRunning);
+            mMapView.getOverlays().add(mTrackOverlay);
+            Toast.makeText(mActivity, mActivity.getString(R.string.toast_message_acquiring_location), Toast.LENGTH_LONG).show();
+        } else {
+            LogHelper.v(LOG_TAG, "Drawing track path overlay.");
+            path = MapHelper.createOverlayPath(track);
+        }
+
+        mMapView.getOverlays().add(path);
+
+    }
+
     private void displayAllTracks() {
         // Function for drawing all tracks as an overlay to the map fragment
 
@@ -623,7 +642,8 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
         LogHelper.v(LOG_TAG, "Trying to draw all overlays onto map");
         // Draw all tracks as an overlay
         for(Track track : tracksCache) {
-            drawTrackOverlay(track);
+            //drawTrackOverlay(track);
+            drawTrackPathOverlay(track);
         }
     }
 
