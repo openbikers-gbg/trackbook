@@ -24,7 +24,7 @@
 
 
         <TextView
-            android:id="@+id/date"
+            android:id="@+id/Date"
             android:layout_weight="1"
             android:layout_height="50dp"
             android:text="11/05/19"
@@ -33,7 +33,7 @@
             />
 
         <TextView
-            android:id="@+id/distance"
+            android:id="@+id/Distance"
             android:layout_weight="1"
             android:layout_height="50dp"
             android:text="13 km"
