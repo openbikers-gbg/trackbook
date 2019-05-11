@@ -39,6 +39,15 @@
             <!-- TODO App is not indexable by Google Search; consider adding at least one Activity with an ACTION-VIEW intent filter. See issue explanation for more details. -->
         </activity>
 
+        <!-- Map With Tracks Activity -->
+        <activity
+            android:name=".MapWithTracks"
+            android:theme="@style/TrackbookAppTheme"
+            android:resizeableActivity="true"
+
+            android:launchMode="singleTop">
+        </activity>
+
         <!-- TRACKER SERVICE -->
         <service
             android:name=".TrackerService"
