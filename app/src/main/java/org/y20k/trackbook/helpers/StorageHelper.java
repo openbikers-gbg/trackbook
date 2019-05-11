@@ -202,7 +202,9 @@ public class StorageHelper implements TrackbookKeys {
         // TODO HANDLE CASE: EMPTY FILE LIST
 
         // get files and sort them
-        return sortFiles(mFolder.listFiles());
+        File[] fileList = mFolder.listFiles();
+        LogHelper.v(LOG_TAG, "Listing trackbook files from file system: " + fileList.length);
+        return sortFiles(fileList);
     }
 
 
@@ -238,7 +240,7 @@ public class StorageHelper implements TrackbookKeys {
             // read until last line reached
             String fileContent;
             String singleLine;
-            StringBuilder sb = new StringBuilder("");
+            StringBuilder sb = new StringBuilder();
             while ((singleLine = br.readLine()) != null) {
                 sb.append(singleLine);
                 sb.append("\n");

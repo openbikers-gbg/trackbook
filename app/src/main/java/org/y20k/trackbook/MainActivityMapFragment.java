@@ -61,6 +61,8 @@ import org.y20k.trackbook.helpers.NightModeHelper;
 import org.y20k.trackbook.helpers.StorageHelper;
 import org.y20k.trackbook.helpers.TrackbookKeys;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -221,6 +223,11 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
         if (mCurrentBestLocation != null && !mTrackerServiceRunning) {
             mMyLocationOverlay = MapHelper.createMyLocationOverlay(mActivity, mCurrentBestLocation, LocationHelper.isCurrent(mCurrentBestLocation), false);
             mMapView.getOverlays().add(mMyLocationOverlay);
+        }
+
+        // TODO: Try to draw all tracks from filesystem onto map
+        if(mMapView != null) {
+            displayAllTracks();
         }
 
         return mMapView;
@@ -558,7 +565,7 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
 
     /* Draws track onto overlay */
     private void drawTrackOverlay(Track track) {
-        mMapView.getOverlays().remove(mTrackOverlay);
+        //mMapView.getOverlays().remove(mTrackOverlay);
         mTrackOverlay = null;
         if (track == null || track.getSize() == 0) {
             LogHelper.i(LOG_TAG, "Waiting for a track. Showing preliminary location.");
@@ -570,6 +577,32 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
         }
         mMapView.getOverlays().add(mTrackOverlay);
 
+    }
+
+    private void displayAllTracks() {
+        // Load all tracks from filesystem
+        List<Track> loadedTracks = loadAllTracks();
+        LogHelper.v(LOG_TAG, "Trying to draw all overlays onto map");
+        // Draw all tracks as an overlay
+        for(Track track : loadedTracks) {
+            drawTrackOverlay(track);
+        }
+    }
+
+    private List<Track> loadAllTracks() {
+        // Create a storage helper for loading track files
+        StorageHelper storageHelper = new StorageHelper(mActivity);
+
+        File[] listOfTrackbookFiles = storageHelper.getListOfTrackbookFiles();
+        List<Track> loadedTracks = new ArrayList<>();
+
+        LogHelper.v(LOG_TAG, "Trying to all tracks from file system");
+        // Try and read all track files into memory
+        for(File trackbookFile : listOfTrackbookFiles) {
+            loadedTracks.add(storageHelper.loadTrack(trackbookFile));
+        }
+
+        return loadedTracks;
     }
 
 
