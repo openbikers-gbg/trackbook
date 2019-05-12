@@ -71,11 +71,11 @@
         app:layout_constraintTop_toTopOf="@+id/statistics_p_distance" />
 
     <TextView
-        android:id="@+id/statistics_p_steps"
+        android:id="@+id/statistics_speed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/statistics_sheet_p_steps"
+        android:text="@string/statistics_sheet_p_speed"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@color/statistic_sheet_text"
         app:layout_constraintStart_toStartOf="@+id/statistics_p_distance"
@@ -89,9 +89,9 @@
         android:text="@string/statistics_sheet_p_default_data"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/statistic_sheet_text"
-        app:layout_constraintBottom_toBottomOf="@+id/statistics_p_steps"
-        app:layout_constraintStart_toEndOf="@+id/statistics_p_steps"
-        app:layout_constraintTop_toTopOf="@+id/statistics_p_steps" />
+        app:layout_constraintBottom_toBottomOf="@+id/statistics_speed"
+        app:layout_constraintStart_toEndOf="@+id/statistics_speed"
+        app:layout_constraintTop_toTopOf="@+id/statistics_speed" />
 
     <TextView
         android:id="@+id/statistics_p_waypoints"
@@ -101,8 +101,8 @@
         android:text="@string/statistics_sheet_p_waypoints"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@color/statistic_sheet_text"
-        app:layout_constraintStart_toStartOf="@+id/statistics_p_steps"
-        app:layout_constraintTop_toBottomOf="@+id/statistics_p_steps" />
+        app:layout_constraintStart_toStartOf="@+id/statistics_speed"
+        app:layout_constraintTop_toBottomOf="@+id/statistics_speed" />
 
     <TextView
         android:id="@+id/statistics_data_waypoints"

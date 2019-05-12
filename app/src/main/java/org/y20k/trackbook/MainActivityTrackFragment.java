@@ -94,7 +94,7 @@ public class MainActivityTrackFragment extends Fragment implements AdapterView.O
     private View mStatisticsSheet;
     private View mStatisticsView;
     private TextView mDistanceView;
-    private TextView mStepsView;
+    private TextView mSpeedView;
     private TextView mWaypointsView;
     private TextView mDurationView;
     private TextView mRecordingStartView;
@@ -225,7 +225,7 @@ public class MainActivityTrackFragment extends Fragment implements AdapterView.O
         mStatisticsView = mRootView.findViewById(R.id.statistics_view);
         mStatisticsSheet = mRootView.findViewById(R.id.statistics_sheet);
         mDistanceView = (TextView) mRootView.findViewById(R.id.statistics_data_distance);
-        mStepsView = (TextView) mRootView.findViewById(R.id.statistics_data_steps);
+        mSpeedView = (TextView) mRootView.findViewById(R.id.statistics_data_steps);
         mWaypointsView = (TextView) mRootView.findViewById(R.id.statistics_data_waypoints);
         mDurationView = (TextView) mRootView.findViewById(R.id.statistics_data_duration);
         mRecordingStartView = (TextView) mRootView.findViewById(R.id.statistics_data_recording_start);
@@ -389,7 +389,7 @@ public class MainActivityTrackFragment extends Fragment implements AdapterView.O
             // populate length views
             displayCurrentLengthUnits();
             // populate other views
-            mStepsView.setText(stepsTaken);
+            double speed = (mTrack.getTrackDistance()/1000)/(mTrack.getTrackDuration()/60);
             mWaypointsView.setText(String.valueOf(mTrack.getWayPoints().size()));
             mDurationView.setText(LocationHelper.convertToReadableTime(mTrack.getTrackDuration(), true));
             mRecordingStartView.setText(recordingStart);
@@ -447,6 +447,20 @@ public class MainActivityTrackFragment extends Fragment implements AdapterView.O
 
     /* Displays views in statistic sheet according to current locale */
     private void displayCurrentLengthUnits() {
+        String speed_unit;
+        double distance = mTrack.getTrackDistance();
+        long duration = mTrack.getTrackDuration()/1000; //seconds
+        if (distance > 1000) {
+            speed_unit = "km/h";
+            duration = duration / 3600;
+        }
+        else speed_unit= " m/s";
+        double speed;
+        if (duration == 0)
+            speed = 0;
+        else
+            speed = distance/duration;
+        mSpeedView.setText((int)speed + speed_unit);
         mDistanceView.setText(LengthUnitHelper.convertDistanceToString(mTrack.getTrackDistance()));
         mPositiveElevationView.setText(LengthUnitHelper.convertDistanceToString(mTrack.getPositiveElevation()));
         mNegativeElevationView.setText(LengthUnitHelper.convertDistanceToString(mTrack.getNegativeElevation()));

@@ -68,6 +68,7 @@
     <string name="statistics_sheet_h1_statistics">Statistics</string>
     <string name="statistics_sheet_p_default_data">track data missing</string>
     <string name="statistics_sheet_p_distance">Total distance:</string>
+    <string name="statistics_sheet_p_speed">Average speed</string>
     <string name="statistics_sheet_p_steps">Steps taken:</string>
     <string name="statistics_sheet_p_steps_no_pedometer">pedometer not available</string>
     <string name="statistics_sheet_p_waypoints">Recorded waypoints:</string>
