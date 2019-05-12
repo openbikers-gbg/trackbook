@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.ContentObserver;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -223,7 +224,7 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
 
 //        // load track from saved instance
 //        if (savedInstanceState != null) {
-//            mTrack = savedInstanceState.getParcelable(INSTANCE_TRACK_MAIN_MAP);
+//            mTrack = savedInstanceState.getParcelable(INSTANCE_TRACK_TRACK_MAP);
 //        }
 
         // mark user's location on map
@@ -459,6 +460,7 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public boolean handleToggleTracks() {
         // Toggle current visibility state of all tracks overlay
         tracksOverlayVisible = !tracksOverlayVisible;
@@ -667,7 +669,16 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
             LogHelper.v(LOG_TAG, "Trying to draw all overlays onto map");
             pathsCache = new ArrayList<>();
             for (Track track : tracksCache) {
+                // Assign a random color to a path
+                Math.random();
+                float r = (float) (Math.random()) * 255 + 1;
+                float g = (float) (Math.random()) * 255 + 1;
+                float b = (float) (Math.random()) * 255 + 1;
+
+                Color pathColor = Color.valueOf(r, g, b);
+
                 Polyline newPath = MapHelper.createOverlayPath(track);
+                newPath.setColor(pathColor.toArgb());
                 pathsCache.add(newPath);
             }
         }

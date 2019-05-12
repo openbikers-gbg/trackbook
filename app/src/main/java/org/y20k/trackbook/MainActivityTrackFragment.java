@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -37,6 +38,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Group;
 import androidx.core.content.ContextCompat;
@@ -52,6 +54,7 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.TilesOverlay;
 import org.osmdroid.views.overlay.compass.CompassOverlay;
 import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
@@ -109,6 +112,7 @@ public class MainActivityTrackFragment extends Fragment implements AdapterView.O
     private int mCurrentTrack;
     private Track mTrack;
     private BroadcastReceiver mTrackSavedReceiver;
+    private Polyline mTrackPathOverlay;
 
 
     /* Return a new Instance of MainActivityTrackFragment */
@@ -405,7 +409,8 @@ public class MainActivityTrackFragment extends Fragment implements AdapterView.O
             }
 
             // draw track on map
-            drawTrackOverlay(mTrack);
+            //drawTrackOverlay(mTrack);
+            drawPathOverlay(mTrack);
 
         } else {
             position = new GeoPoint(DEFAULT_LATITUDE, DEFAULT_LONGITUDE);
@@ -414,6 +419,14 @@ public class MainActivityTrackFragment extends Fragment implements AdapterView.O
         // center map over position
         mController.setCenter(position);
 
+    }
+
+    /* Draws path onto overlay */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void drawPathOverlay(Track track) {
+        mMapView.getOverlays().remove(mTrackPathOverlay);
+        mTrackPathOverlay = MapHelper.createOverlayPath(track);
+        mMapView.getOverlays().add(mTrackPathOverlay);
     }
     
 
