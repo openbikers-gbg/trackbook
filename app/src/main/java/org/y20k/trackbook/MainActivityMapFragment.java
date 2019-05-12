@@ -27,6 +27,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -37,6 +38,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -99,6 +101,7 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
 
     private boolean tracksOverlayVisible;
     private List<Track> tracksCache;
+    private List<Polyline> pathsCache;
 
 
     /* Constructor (default) */
@@ -614,6 +617,7 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
     }
 
     /* Draws track path onto overlay */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void drawTrackPathOverlay(Track track) {
         //mMapView.getOverlays().remove(mTrackOverlay);
         Polyline path = null;
@@ -631,6 +635,24 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
 
     }
 
+    private void drawTrackPathOverlay(Polyline track) {
+
+        Polyline path = null;
+        if (track == null || track.getPoints().size() == 0) {
+            LogHelper.i(LOG_TAG, "Waiting for a track. Showing preliminary location.");
+            mTrackOverlay = MapHelper.createMyLocationOverlay(mActivity, mCurrentBestLocation, false, mTrackerServiceRunning);
+            mMapView.getOverlays().add(mTrackOverlay);
+            Toast.makeText(mActivity, mActivity.getString(R.string.toast_message_acquiring_location), Toast.LENGTH_LONG).show();
+        } else {
+            LogHelper.v(LOG_TAG, "Drawing track path overlay.");
+            path = track;
+        }
+
+        mMapView.getOverlays().add(path);
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void displayAllTracks() {
         // Function for drawing all tracks as an overlay to the map fragment
 
@@ -639,11 +661,19 @@ public class MainActivityMapFragment extends Fragment implements TrackbookKeys {
             LogHelper.v(LOG_TAG, "Initializing all tracks cache");
             tracksCache = loadAllTracks();
         }
-        LogHelper.v(LOG_TAG, "Trying to draw all overlays onto map");
+        // If there exists no cache with paths or paths cache and total number of tracks does not
+        // match ..
+        if(pathsCache == null || pathsCache.size() != tracksCache.size()) {
+            LogHelper.v(LOG_TAG, "Trying to draw all overlays onto map");
+            pathsCache = new ArrayList<>();
+            for (Track track : tracksCache) {
+                Polyline newPath = MapHelper.createOverlayPath(track);
+                pathsCache.add(newPath);
+            }
+        }
         // Draw all tracks as an overlay
-        for(Track track : tracksCache) {
-            //drawTrackOverlay(track);
-            drawTrackPathOverlay(track);
+        for(Polyline path : pathsCache) {
+            drawTrackPathOverlay(path);
         }
     }
 

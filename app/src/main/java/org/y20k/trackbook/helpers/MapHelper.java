@@ -17,8 +17,10 @@
 package org.y20k.trackbook.helpers;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.os.Build;
 import android.widget.Toast;
 
 import org.osmdroid.util.GeoPoint;
@@ -35,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 /**
@@ -185,6 +188,7 @@ public final class MapHelper {
 
     /* Connect all the waypoints of a Track object with lines */
 
+    @RequiresApi(api = Build.VERSION_CODES.O) //Color.valueOf() requires API-level >= 26
     public static Polyline createOverlayPath(Track track) {
 
         Polyline path = new Polyline();
@@ -202,6 +206,14 @@ public final class MapHelper {
             path.addPoint(geoPoint);
         }
 
+        // Assign a random color to a path
+        Math.random();
+        float r = (float) (Math.random()) * 255 + 1;
+        float g = (float) (Math.random()) * 255 + 1;
+        float b = (float) (Math.random()) * 255 + 1;
+
+        Color pathColor = Color.valueOf(r, g, b);
+        path.setColor(pathColor.toArgb());
 
         return path;
     }
