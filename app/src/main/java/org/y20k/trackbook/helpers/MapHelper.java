@@ -202,18 +202,13 @@ public final class MapHelper {
 
             GeoPoint geoPoint = new GeoPoint(latitude, longitude);
 
+            // Set the path's color to blue
+            int pathColor = Color.parseColor("#09AAFF");
+            path.setColor(pathColor);
+
             // Add it to the polyline
             path.addPoint(geoPoint);
         }
-
-        // Assign a random color to a path
-        Math.random();
-        float r = (float) (Math.random()) * 255 + 1;
-        float g = (float) (Math.random()) * 255 + 1;
-        float b = (float) (Math.random()) * 255 + 1;
-
-        Color pathColor = Color.valueOf(r, g, b);
-        path.setColor(pathColor.toArgb());
 
         return path;
     }
