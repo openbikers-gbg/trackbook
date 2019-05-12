@@ -179,7 +179,7 @@
             android:clickable="true"
             android:contentDescription="@string/descr_toggle_tracks"
             android:focusable="true"
-            app:backgroundTint="@color/trackbook_grey_lighter"
+            app:backgroundTint="@color/trackbook_blue_85percent"
             app:fabSize="mini"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
