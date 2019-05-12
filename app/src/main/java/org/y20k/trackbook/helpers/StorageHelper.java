@@ -136,6 +136,7 @@ public class StorageHelper implements TrackbookKeys {
             // write track
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
                 LogHelper.v(LOG_TAG, "Saving track to external storage: " + file.toString());
+                LogHelper.v(LOG_TAG, "Data: " + json);
                 bw.write(json);
             } catch (IOException e) {
                 LogHelper.e(LOG_TAG, "Unable to saving track to external storage (IOException): " + file.toString());

@@ -117,21 +117,18 @@ public final class ExportHelper extends FileProvider implements TrackbookKeys {
     public static Intent getJSONFileIntent(Context context, Track track) {
 
         // create file in Cache directory for given track
-        //File gpxFile = createFile(track, context.getCacheDir());
-
-        File gpxFile = new File(context.getCacheDir(), "openbikers" + ".json");
+        File jsonFile = new File(context.getCacheDir(), "openbikers" + ".json");
 
 
-        // get GPX string representation for given track
-        //String gpxString = createGpxString(track);
-        String gpxString = createJsonString(track);
+        // get Json string representation for given track
+        String jsonString = createJsonString(track);
 
         // write GPX file
-        if (writeJSONToFile(gpxString, gpxFile)) {
-            String toastMessage = context.getResources().getString(R.string.toast_message_export_json_success) + " " + gpxFile.toString();
+        if (writeJSONToFile(jsonString, jsonFile)) {
+            String toastMessage = context.getResources().getString(R.string.toast_message_export_json_success) + " " + jsonFile.toString();
             Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show();
         } else {
-            String toastMessage = context.getResources().getString(R.string.toast_message_export_fail) + " " + gpxFile.toString();
+            String toastMessage = context.getResources().getString(R.string.toast_message_export_fail) + " " + jsonFile.toString();
             Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show();
         }
 
@@ -139,9 +136,9 @@ public final class ExportHelper extends FileProvider implements TrackbookKeys {
         String authority = "org.y20k.trackbook.exporthelper.provider";
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
-        intent.setDataAndType(FileProvider.getUriForFile(context, authority, gpxFile), "application/gpx+xml");
+        intent.setDataAndType(FileProvider.getUriForFile(context, authority, jsonFile), "application/gpx+xml");
         intent.setType("application/gpx+xml");
-        intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(context, authority, gpxFile));
+        intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(context, authority, jsonFile));
 
         return intent;
     }
@@ -194,7 +191,8 @@ public final class ExportHelper extends FileProvider implements TrackbookKeys {
     private static boolean writeJSONToFile (String jsonString, File jsonFile) {
         // write track
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(jsonFile))) {
-            LogHelper.v(LOG_TAG, "Saving track to external storage: " + jsonFile.toString());
+            LogHelper.v(LOG_TAG, "Saving track to external storage: " + jsonFile);
+            LogHelper.v(LOG_TAG, "data: " + jsonString);
             bw.write(jsonString);
             return true;
         } catch (IOException e) {
