@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- activities -->
-    <string name="app_name">Trackbook</string> <!-- please do not translate app_name - transcription into different alphabet types is fine though -->
+    <string name="app_name">OpenBikers</string> <!-- please do not translate app_name - transcription into different alphabet types is fine though -->
     <!-- tabs -->
     <string name="tab_map">Map</string>
     <string name="tab_last_tracks">Last Tracks</string>
     <!-- notification -->
-    <string name="notification_title_trackbook_running">Trackbook running</string>
-    <string name="notification_title_trackbook_not_running">Trackbook not running</string>
+    <string name="notification_title_trackbook_running">OpenBikers running</string>
+    <string name="notification_title_trackbook_not_running">OpenBikers not running</string>
     <string name="notification_stop">Stop</string>
     <string name="notification_resume">Resume</string>
     <string name="notification_show">Show</string>
@@ -19,7 +19,7 @@
     <string name="snackbar_message_tracking_stopped">Tracking stopped</string>
     <string name="snackbar_message_tracking_started">Tracking started</string>
     <string name="snackbar_message_tracking_resumed">Tracking resumed</string>
-    <string name="snackbar_message_location_offline">Location is turned off. Trackbook will not work.</string>
+    <string name="snackbar_message_location_offline">Location is turned off. OpenBikers will not work.</string>
     <!-- fab sub menu -->
     <string name="fab_sub_menu_clear">Clear</string>
     <string name="fab_sub_menu_save">Save</string>
@@ -39,13 +39,13 @@
     <string name="dialog_export_action_overwrite">Export and Overwrite</string>
     <string name="dialog_share_gpx">Share GPX file with</string>
     <string name="dialog_error_empty_recording_title">Unable to save</string>
-    <string name="dialog_error_empty_recording_content">Trackbook did not record any waypoints so far.</string>
+    <string name="dialog_error_empty_recording_content">OpenBikers did not record any waypoints so far.</string>
     <string name="dialog_error_empty_recording_action_resume">Resume Recording</string>
     <!-- toast messages -->
     <string name="toast_message_permissions_granted">Permissions granted.</string>
-    <string name="toast_message_unable_to_start_app">Unable to start Trackbook.</string>
+    <string name="toast_message_unable_to_start_app">Unable to start OpenBikers.</string>
     <string name="toast_message_no_external_storage">Unable to access external storage.</string>
-    <string name="toast_message_location_offline">Location is turned off. Trackbook will not work.</string>
+    <string name="toast_message_location_offline">Location is turned off. OpenBikers will not work.</string>
     <string name="toast_message_acquiring_location">Acquiring current location.</string>
     <string name="toast_message_location_services_not_ready">Location services not ready. Please retry.</string>
     <string name="toast_message_last_location">Last location:</string>
@@ -79,14 +79,14 @@
     <string name="statistics_sheet_p_negative_elevation">Elevation (downhill):</string>
     <!-- onboarding layout -->
     <string name="layout_onboarding_h1_welcome">Hello</string>
-    <string name="layout_onboarding_description_app_icon">Trackbook App Icon</string>
-    <string name="layout_onboarding_h2_app_name">Trackbook</string>
+    <string name="layout_onboarding_description_app_icon">OpenBikers App Icon</string>
+    <string name="layout_onboarding_h2_app_name">OpenBikers</string>
     <string name="layout_onboarding_p_app_claim">Movement Recorder</string>
-    <string name="layout_onboarding_h2_request_permissions">Trackbook cannot work without this permission:</string>
+    <string name="layout_onboarding_h2_request_permissions">OpenBikers cannot work without this permission:</string>
     <string name="layout_onboarding_h3_permission_location">LOCATION</string>
-    <string name="layout_onboarding_p_permission_location">Trackbook needs accurate GPS data to be able to record your movements. If the GPS data is not available or not accurate enough, Trackbook uses location data from cell tower and Wi-Fi triangulation.</string>
+    <string name="layout_onboarding_p_permission_location">OpenBikers needs accurate GPS data to be able to record your movements. If the GPS data is not available or not accurate enough, OpenBikers uses location data from cell tower and Wi-Fi triangulation.</string>
     <string name="layout_onboarding_h3_permission_storage">STORAGE</string>
-    <string name="layout_onboarding_p_permission_storage">Trackbook uses osmdroid, which caches map tiles on Android\'s external storage. You can find the map cache in the osmdroid folder on the top level of the user-facing file system.</string>
+    <string name="layout_onboarding_p_permission_storage">OpenBikers uses osmdroid, which caches map tiles on Android\'s external storage. You can find the map cache in the osmdroid folder on the top level of the user-facing file system.</string>
     <string name="layout_onboarding_button_okay">Got it!</string>
     <!-- track tab onboarding -->
     <string name="track_tab_onboarding_h1_part_1">Your recorded tracks</string>
