@@ -59,6 +59,7 @@
     <string name="toast_message_last_location_age_one_hour">över en timme</string>
     <!--<string name="toast_message_track_clear"></string>-->
     <string name="toast_message_export_success">Exportering av GPX lyckades:</string>
+    <string name="toast_message_export_json_success">Exportering av JSON lyckades:</string>
     <!--<string name="toast_message_export_fail"></string>-->
     <!--<string name="toast_message_elevation_info"></string>-->
     <!--<string name="toast_message_install_file_helper"></string>-->

@@ -69,11 +69,7 @@ import org.y20k.trackbook.helpers.TrackbookKeys;
 
 import java.io.File;
 import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
-import java.util.stream.Stream;
 
 
 /**
@@ -359,10 +355,11 @@ public class MainActivityTrackFragment extends Fragment implements AdapterView.O
             case RESULT_EXPORT_DIALOG:
                 if (resultCode == Activity.RESULT_OK) {
                     // user chose EXPORT
-                    ExportHelper.exportToGpx(mActivity, mTrack);
+                    //ExportHelper.exportToGpx(mActivity, mTrack);
+                    ExportHelper.exportToJSON(mActivity, mTrack);
                 } else if (resultCode == Activity.RESULT_CANCELED){
                     // User chose CANCEL
-                    LogHelper.v(LOG_TAG, "Export to GPX: User chose CANCEL.");
+                    LogHelper.v(LOG_TAG, "Export to JSON: User chose CANCEL.");
                 }
                 break;
         }
@@ -545,7 +542,7 @@ public class MainActivityTrackFragment extends Fragment implements AdapterView.O
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = ExportHelper.getGpxFileIntent(mActivity, mTrack);
+                Intent intent = ExportHelper.getJSONFileIntent(mActivity, mTrack);
                 // create intent to show chooser
                 String title = getString(R.string.dialog_share_gpx);
 //                String title = getResources().getString(R.string.chooser_title);

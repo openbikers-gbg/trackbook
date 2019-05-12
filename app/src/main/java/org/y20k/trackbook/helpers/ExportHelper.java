@@ -38,6 +38,9 @@ import java.util.TimeZone;
 
 import androidx.core.content.FileProvider;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 /**
  * ExportHelper class
  */
@@ -74,19 +77,58 @@ public final class ExportHelper extends FileProvider implements TrackbookKeys {
         }
     }
 
-
-    /* Creates Intent used to bring up an Android share sheet */
-    public static Intent getGpxFileIntent(Context context, Track track) {
-
+    /* Exports given track to JSON */
+    public static boolean exportToJSON(Context context, Track track) {
         // create file in Cache directory for given track
-        File gpxFile = createFile(track, context.getCacheDir());
+        File jsonFile = new File(context.getCacheDir(), track.getmTrackName() + ".json");
 
         // get GPX string representation for given track
-        String gpxString = createGpxString(track);
+        String jsonString = createJsonString(track);
+
+        LogHelper.v(LOG_TAG, "Saving track to JSON: " + jsonString);
+
+        // write JSON file
+        if(writeJSONToFile(jsonString, jsonFile)) {
+            String toastMessage = context.getResources().getString(R.string.toast_message_export_json_success) + " " + jsonFile.toString();
+            Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show();
+            return true;
+        } else {
+            String toastMessage = context.getResources().getString(R.string.toast_message_export_fail) + " " + jsonFile.toString();
+            Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show();
+            return false;
+        }
+    }
+
+    private static String createJsonString(Track track) {
+        // convert track to JSON
+        Gson gson = getCustomGson();
+        String json = gson.toJson(track);
+        return json;
+    }
+
+    /*  Creates a Gson object */
+    private static Gson getCustomGson() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.setDateFormat("M/d/yy hh:mm a");
+        return gsonBuilder.create();
+    }
+
+    /* Creates Intent used to bring up an Android share sheet */
+    public static Intent getJSONFileIntent(Context context, Track track) {
+
+        // create file in Cache directory for given track
+        //File gpxFile = createFile(track, context.getCacheDir());
+
+        File gpxFile = new File(context.getCacheDir(), "openbikers" + ".json");
+
+
+        // get GPX string representation for given track
+        //String gpxString = createGpxString(track);
+        String gpxString = createJsonString(track);
 
         // write GPX file
-        if (writeGpxToFile(gpxString, gpxFile)) {
-            String toastMessage = context.getResources().getString(R.string.toast_message_export_success) + " " + gpxFile.toString();
+        if (writeJSONToFile(gpxString, gpxFile)) {
+            String toastMessage = context.getResources().getString(R.string.toast_message_export_json_success) + " " + gpxFile.toString();
             Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show();
         } else {
             String toastMessage = context.getResources().getString(R.string.toast_message_export_fail) + " " + gpxFile.toString();
@@ -144,6 +186,19 @@ public final class ExportHelper extends FileProvider implements TrackbookKeys {
             return true;
         } catch (IOException e) {
             LogHelper.e(LOG_TAG, "Unable to saving track to external storage (IOException): " + gpxFile.toString());
+            return false;
+        }
+    }
+
+    /* Writes given GPX string to given file */
+    private static boolean writeJSONToFile (String jsonString, File jsonFile) {
+        // write track
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(jsonFile))) {
+            LogHelper.v(LOG_TAG, "Saving track to external storage: " + jsonFile.toString());
+            bw.write(jsonString);
+            return true;
+        } catch (IOException e) {
+            LogHelper.e(LOG_TAG, "Unable to saving track to external storage (IOException): " + jsonFile.toString());
             return false;
         }
     }

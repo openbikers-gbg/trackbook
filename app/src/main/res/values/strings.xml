@@ -53,6 +53,7 @@
     <string name="toast_message_last_location_age_one_hour">over one hour</string>
     <string name="toast_message_track_clear">Current track data removed.</string>
     <string name="toast_message_export_success">GPX export successful:</string>
+    <string name="toast_message_export_json_success">JSON export successful:</string>
     <string name="toast_message_export_fail">GPX export failed:</string>
     <string name="toast_message_elevation_info">Hint: The accuracy of elevation data depends on your device. The uphill and downhill elevation of the whole route is measured.</string>
     <string name="toast_message_install_file_helper">Please install a file manager or a GPX track viewer first.</string>
